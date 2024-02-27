@@ -6,7 +6,7 @@ import { Button } from '../../Button/Button';
 
 // Services
 
-import { getAllContactTypes } from '../../../services/ContactTypeService';
+import { getAllContactTypes, getContactTypeByValue } from '../../../services/ContactTypeService';
 import { useEffect, useState } from 'react';
 
 export default function RegistrarTecnico(){
@@ -31,11 +31,20 @@ export default function RegistrarTecnico(){
 
     const {fields, append, remove} = useFieldArray({name: "contactData", control});
 
+    console.log("errors", errors)
+
     function onSubmit(data) {
         console.log(data);
+        console.log(watchContactData[1]);
+        
     }
 
-    // Variables for the form.
+    // I'm watching the contactData field. That field, is an array of Objects of {type, data}
+    // watchContactData is an array that has all the fields of the contactData array, with their updated values.
+    let watchContactData = watch('contactData');
+
+    // Normal react.
+
 
     let [contactMethods, setContactMethods] = useState([]);
 
@@ -46,10 +55,12 @@ export default function RegistrarTecnico(){
         }
 
         getContactTypes();
+        console.log(watchContactData)
 
         return () => {setContactMethods([])}
 
     }, [])
+
 
 
     return(
@@ -75,6 +86,8 @@ export default function RegistrarTecnico(){
 
                 {
                     fields.map((field, idx) => {
+                        //We obtain the selected contact type.
+                        let  contact = getContactTypeByValue(watchContactData[idx].type)
 
                         return(
                             <div key={field.id} style={{display: 'flex', gap: '1ch', alignItems: 'start'}}>
@@ -83,26 +96,33 @@ export default function RegistrarTecnico(){
                                     options={contactMethods}
                                     register={register}
                                     selectOptionMessage={"Metodo de Contacto"}
+                                    error={errors.contactData?.[idx]?.type}
+                                    required={"Por favor, seleccione un metodo de contacto."}
                                 />
-                                <Input 
-                                    label={"Dato de contacto"}
-                                    type='text'
-                                    attributeName={`contactData.${idx}.data`}
-                                    register={register}
-                                    validations={{required: "El dato de contacto es requerido"}}
-                                    error={errors.contactData}
-                                />
+                                {   // We only render the input if there is a contactType selected
+                                    contact &&                                
+                                    <Input 
+                                        label={contact.label}
+                                        type='text'
+                                        attributeName={`contactData.${idx}.data`}
+                                        register={register}
+                                        validations={{required: contact.required, pattern: contact.pattern}}
+                                        error={errors.contactData?.[idx]?.data}
+                                    />}
 
-                                {idx > 0 && 
-                                <Button type="button" size='small' buttonClass={'delete'} onClick={() => remove(idx)}>
-                                    Eliminar
-                                </Button>}
+                                {   //We ensure that the first button cannot be deleted.
+                                    idx > 0 && 
+                                    <Button type="button" size='small' buttonClass={'delete'} onClick={() => remove(idx)}>
+                                        Eliminar
+                                    </Button>
+                                }
                             </div>
                         )
                         
                 })}
                     <Button type="button" 
-                            onClick={() => append({contactData: {type: "", data: ""}})}
+                            onClick={() => 
+                                append({type: "telefono", data: ""})}
                             buttonClass='add'>Nuevo metodo de contacto</Button>
             </Fieldset>
 

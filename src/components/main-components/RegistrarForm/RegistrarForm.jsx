@@ -122,7 +122,7 @@ export function ErrorMessage({children}) {
     )
 }
 
-export function SelectList({attributeName, options, selectOptionMessage, register, requiredMessage=undefined}) {
+export function SelectList({attributeName, options, selectOptionMessage, register, error, required = {value: false, message: "This field is not requried"}}) {
     /*options: [
             {
                 value
@@ -135,15 +135,15 @@ export function SelectList({attributeName, options, selectOptionMessage, registe
         
             <div>
                 <select className={styles.select}
-                        {...register(attributeName, {required: (requiredMessage != undefined ) ? requiredMessage : "This field is required!" })}>
-                    <option value="" disabled hidden key="empty">{selectOptionMessage}</option>
+                        {...register(attributeName, {required: required })}>
+                    <option value="" key={options.length + 1} hidden>{selectOptionMessage}</option>
                     {options.map((o) => {
                         return (
                             <option key={o.value} value={o.value}>{o.label}</option>
                         )
                     })}
                 </select>
-
+                {(error) && <ErrorMessage>{error.message}</ErrorMessage>}
             </div>
 
         )
