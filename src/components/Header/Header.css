@@ -1,0 +1,159 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+/*HEADER*/
+
+header {
+    display: flex;
+    flex-direction: column;
+}
+
+.container-site-header {
+    background-color: var(--main-color);
+}
+
+.site-header p {
+    color: aliceblue;
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-top: 0;
+    margin-bottom: 0;
+    align-self: center;
+    text-shadow: 1px 1px 3px black;
+
+}
+
+
+/*BUTTONS */
+
+
+
+.button-link {
+    background-color: var(--link-button-color);
+    height: 3ch;
+    width: 19ch;
+    border-radius: 10px;
+    border: 1px solid #ffffff;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 1ch;
+    flex: 1;
+
+    text-align: center;
+    font-size: 1.2rem;
+
+
+    color: black;
+    letter-spacing: 1px;
+    text-decoration: none;
+
+    transition-property: background-color, transform;
+    transition-duration: 100ms;
+
+}
+
+
+
+.button-link:hover, .button-link:focus {
+    background-color: var(--link-button-hover-color);
+}
+
+
+#new-user::before {
+    font-family: 'Material Icons';
+    content: "person_add";
+    font-size: 2.3rem;
+    /*background-size: contain;
+    overflow-x: visible;
+    height: 100%;
+    flex-basis: 5ch;
+    overflow-x: hidden;
+    background-image: url(./Icons/person_add_FILL1_wght400_GRAD0_opsz24.svg);
+    background-repeat: no-repeat;
+    filter: drop-shadow(1px 1px 1px rgb(109, 109, 109));*/
+    
+}
+
+#login::before {
+    font-family: 'Material Icons';
+    content: "account_circle";
+    font-size: 2.3rem;
+}
+
+@media all and (orientation: landscape) {
+    .container-site-header {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        overflow-y: hidden;
+    }
+    
+    /*TITLE HEADER*/
+    .site-header{
+        display: flex;
+        gap: 1ch;
+        padding-left: 2%;
+        text-decoration: none;
+    }
+
+    .button-container {
+        justify-self: end;
+        display: flex;
+        gap: 3ch;
+        align-items: center;
+        padding-right: 3%;
+    }
+
+
+    .site-header::before {
+        font-family: 'Material Icons';
+        content: 'monitor_heart';
+        color: white;
+        align-self: center;
+        font-size: 5ch;
+        filter: drop-shadow(2px 1px 3px black);
+
+        
+    }
+    
+}
+
+
+@media all and (orientation: portrait) {
+    .container-site-header {
+        display: flex;
+        flex-direction: column;
+        gap: .5ch;
+        padding: 10px;
+    }
+
+    .site-header{
+        display: flex;
+        padding: 2%;
+        flex-direction: column;
+        text-decoration: none;
+        width: 100%;
+        text-align: center;
+    }
+
+    .button-link {
+        height: 4ch;
+        padding: 3%;
+    }
+
+    .button-container {
+        justify-self: end;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 3ch;
+        align-items: center;
+        padding-left: 0%;
+        padding-bottom: 1ch;
+        padding-right: 0%;
+
+    }
+}

@@ -1,0 +1,187 @@
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg-color: #007e9b
+}
+
+
+
+.navbar {
+
+    display: flex;
+    justify-content: start;
+    background-color: var(--bg-color);
+    align-items: center;
+    flex-wrap: wrap;
+
+}
+
+.navbar a {
+    padding: 10px;
+    color: white;
+    font-size: 1.4rem;
+    font-weight: 700;
+    position: relative;
+    text-decoration: none;
+  }
+
+.navbar a::after {
+    content: '';
+    display: block;
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 4px; /* Adjust as needed */
+    background-color: transparent;
+    transition: width 0.3s ease; /* Adjust animation speed as needed */
+}
+
+
+
+.navbar a.underline-orange::after {
+    --underline-color: var(--orange);
+}
+
+.navbar a.underline-purple::after {
+    --underline-color: var(--purple);
+}
+
+.navbar a.underline-red::after {
+    --underline-color: var(--red);
+}
+
+.navbar a.underline-blue::after {
+    --underline-color: var(--blue);
+}
+
+.navbar a.underline-pink::after {
+    --underline-color: var(--pink);
+}
+
+.navbar a.active {
+    background-color: #00596d;
+    
+}
+
+@media all and (min-width: 800px) {
+
+    .hamburgerMenu {
+        display: none;
+    }
+
+    .hamburgerMenuLinks {
+        display: none;
+    }
+
+    .navbar {
+        display: flex;
+        justify-content: start;
+        background-color: var(--navbar-bg-color);
+        padding-inline-start: 5ch;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 3ch;
+    
+    }
+
+    .navbar a:hover::after {
+        width: 100%; /* Expand the underline on hover */
+        background-color: var(--underline-color, transparent) /* Choose your desired color here */;
+    }
+}
+
+@media all and (max-width: 799px) {
+
+    .navbar{
+        display: none;
+    }
+
+    .hamburgerMenu {
+
+        font-size: 1.5rem;
+        background-color: #165e6e;
+        color: white;
+        border: none;
+
+    }
+    .hamburgerMenu::before, .hamburgerMenu::after {
+        font-family: 'Material Icons';
+        content: 'arrow_drop_down';
+    }
+
+    .hamburgerMenuLinks{
+
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+        align-items: start;
+
+        background-color: var(--bg-color);
+        padding-inline-start: 3ch;
+        gap: 2ch;
+        color: white;
+
+        transition: height 0.2s ease-out;
+        height: 0;
+    }
+
+
+    .hamburgerMenuLinks a {
+        display: flex;
+        font-size: 1.4rem;
+        align-items: center;
+        text-decoration: none;
+
+    }
+
+    .hamburgerMenuLinks a:visited {
+        color: inherit;
+
+    }
+
+    
+
+    .hamburgerMenuLinks a::before {
+        font-family: 'Material Icons';
+        content: 'arrow_right';
+        font-size: 1.4rem;
+
+    }
+
+    .hamburgerMenuLinks a.active::before {
+        color: red;
+    }
+}
+
+
+/*
+@media all and (orientation: portrait) {
+    .navbar {
+        display: none;
+        flex-direction: column;
+        align-items: start;
+        padding-inline-start: 3ch;
+        gap: 2ch;
+
+    }
+    .navbar a {
+        display: flex;
+        font-size: 1.4rem;
+        align-items: center;
+    }
+
+    .navbar a::before {
+        font-family: 'Material Icons';
+        content: 'arrow_right';
+        font-size: 1.4rem;
+
+    }
+    
+}
+*/

@@ -1,0 +1,85 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+
+.footer {
+    background-color: var(--main-color);
+}
+
+.legal {
+    color: rgb(65, 65, 65);
+    text-shadow: 1px 1px 1px #ffffff;
+
+
+}
+
+.contact {
+    color: rgb(65, 65, 65);
+    text-shadow: 1px 1px 1px #ffffff;
+
+
+}
+
+.legal a, .contact a{
+    color: rgb(65, 65, 65);
+    text-shadow: 1px 1px 1px #ffffff;
+
+}
+
+
+
+@media all and (orientation:landscape) {
+
+    .footer {
+        justify-self: end;
+        margin-top: auto;
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        overflow-x: scroll;
+        
+    }
+    .legal::before {
+        flex-basis: 15%;
+        font-family: 'Material Icons';
+        content: 'policy';
+        font-size: 4rem;
+        color: white;
+        filter: drop-shadow(1px 1px 1px black);
+    }
+
+    .legal {
+        justify-self: start;
+        display: flex;
+        gap: 2ch;
+        align-items: center;
+    
+    }
+
+    .contact{
+        justify-self: end;
+        display: flex;
+        align-items: center;
+        gap: 2ch;
+        padding-right: 2ch;
+    }
+    
+
+}
+
+@media all and (orientation:portrait) {
+
+    .footer {
+        margin-top: auto;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        align-items: center;
+        text-align: center;
+
+    }
+
+}

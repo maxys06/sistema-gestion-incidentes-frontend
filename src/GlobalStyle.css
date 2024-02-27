@@ -1,0 +1,97 @@
+:root {
+
+    --site-font-family: 'Montserrat', sans-serif;
+    --site-font-size: 1.05rem;
+    --site-background-color: rgb(255, 255, 255);
+
+    --main-color: #73b9fa;
+    --gradient-secondary-color: #7c24f0;
+    --navbar-bg-color: #007e9b;
+
+    --link-button-color: rgb(255, 255, 255);
+    --link-button-hover-color: #cff6fc;
+
+    --purple: #7d02f0;
+    --red: #970000;
+    --orange: #da6900;
+    --blue: #020063;
+    --pink: #8a0073;
+
+    --grid-item-color: #f3f3f3;
+    --grid-item-hover-color: #bde2ff80;
+    --grid-item-header-color: rgb(219, 218, 218);
+}
+
+*,
+*::after,
+*::before {
+    box-sizing: border-box;
+}
+
+/*The whole document style*/
+html {
+    font-family:var(--site-font-family);
+    font-size: var(--site-font-size);
+    background-color:var(--site-background-color)
+}
+
+body {
+    margin: 0px;
+}
+
+/*Style for the root element*/
+#root {
+    display: flex;
+    width: 100%;
+    margin: 0px;
+    flex-direction: column;
+    min-height: 100vh;
+ 
+
+}
+    
+
+.hidden {
+    display: none;
+}
+
+.main-container{
+    display: flex;
+    align-content: center;
+    
+}
+
+
+
+.color-purple {
+    --line-color: var(--purple)
+}
+.color-red {
+    --line-color: var(--red)
+}
+.color-blue {
+    --line-color: var(--blue)
+}
+.color-green {
+    --line-color: var(--green)
+}
+
+.color-pink {
+    --line-color: var(--pink)
+}
+
+.color-orange {
+    --line-color: var(--orange)
+}
+
+@media (min-width:1600px) {
+    .main-container{
+        flex-direction: row;
+    }
+}
+
+@media (max-width:1599px) {
+    .main-container{
+        flex-direction: column
+    }
+}

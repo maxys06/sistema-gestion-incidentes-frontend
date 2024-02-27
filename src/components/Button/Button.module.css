@@ -1,0 +1,87 @@
+.myButton{
+
+    font-size: 1rem;
+    padding-left:2ch;
+    padding-right:2ch;
+    padding-top:1ch;
+    padding-bottom:1ch;
+    transition-property: background-color, box-shadow;
+    transition-duration: 100ms;
+    transition-timing-function: ease;
+    border-radius: 10px;
+    border: 0px;
+
+    display: flex;
+    gap: 0.5ch;
+    align-items: center;
+    background: var(--button-bg-color, gray);
+    color: rgb(255, 255, 255);
+}
+
+
+.myButton::before {
+    font-family: 'Material Icons';
+    content: var(--button-icon);
+}
+
+.small {
+    font-size: 0.7rem;
+}
+
+.big {
+    font-size: 1.5rem;
+}
+
+.myButton:hover, .myButton:focus {
+    background-color: var(--button-bg-hover-color, gray);
+    box-shadow: 0px 0px 10px var(--button-bg-hover-shadow-color, gray);
+    cursor: pointer;
+}
+
+.myButton:active{
+    background-color: var(--button-bg-click-color);
+}
+
+.myButton:focus {
+    box-shadow: 0px 0px 10px var(--button-bg-hover-shadow-color, gray);
+}
+
+.register {
+    --button-bg-color: rgba(24, 168, 24, 0.692);
+    --button-bg-hover-color: rgb(16, 150, 23);
+    --button-bg-hover-shadow-color: rgb(15, 255, 7);
+    --button-bg-click-color: rgb(12, 117, 17);
+    --button-icon: 'add_circle';
+}
+
+.search {
+    --button-bg-color: rgb(60, 19, 136);
+    --button-bg-hover-color: rgb(41, 13, 94);
+    --button-bg-hover-shadow-color: rgb(90, 27, 207);
+    --button-bg-click-color: rgb(37, 12, 83);
+    --button-icon: 'search';
+}
+
+.delete {
+    --button-bg-color: rgb(136, 19, 19);
+    --button-bg-hover-color: rgb(94, 13, 13);
+    --button-bg-hover-shadow-color: rgb(207, 27, 27);
+    --button-bg-click-color: rgb(83, 12, 12);
+    --button-icon: 'delete';
+}
+
+.modificar {
+    --button-bg-color: rgb(19, 40, 136);
+    --button-bg-hover-color: rgb(13, 51, 94);
+    --button-bg-hover-shadow-color: rgb(27, 105, 207);
+    --button-bg-click-color: rgb(12, 37, 83);
+    --button-icon: 'edit';
+}
+
+.consultar {
+    --button-bg-color: rgb(19, 109, 136);
+    --button-bg-hover-color: rgb(13, 91, 94);
+    --button-bg-hover-shadow-color: rgb(27, 165, 207);
+    --button-bg-click-color: rgb(12, 66, 83);
+    --button-icon: 'visibility';
+}

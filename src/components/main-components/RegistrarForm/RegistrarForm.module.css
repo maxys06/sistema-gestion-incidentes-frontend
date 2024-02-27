@@ -1,0 +1,185 @@
+/*Each formGroup is a FLEX row*/
+
+.formGroup {
+    border: 0px;
+
+}
+
+/*The header of the form group*/
+
+/*The set of inputs of the formGroup*/
+.formGroupInputs{
+    display: flex;
+    flex-direction: column;
+    gap: 1ch;
+}
+
+/*The input with its associated label*/
+.input {
+    display: flex;
+    flex-direction: column;
+    gap: .2ch;
+
+}
+
+
+.input label {
+    color: grey;
+    font-style: italic;
+    max-width: 50ch;
+}
+
+
+
+.input input {
+    font-weight: 300;
+    font-size: 1rem;
+    border-radius: 5px;
+    border: 2px solid gray;
+    padding-left: 1ch;
+    padding-right: 1ch;
+
+    transition-property: border-color, border-width;
+    transition-duration: 500ms;
+    transition-behavior: ease;
+}
+
+.input input:is(:hover, :focus) {
+    background-color: var(--grid-item-hover-color);
+} 
+
+.input  input:focus {
+    border-color: black;
+    outline: none;
+}
+
+/*The styling for a set of radio buttons*/
+
+.radioButtonList {
+    display: flex;
+    flex-direction: row;
+    gap: 2ch
+}
+
+.radioButton, .checkBox{
+    font-size: 1.2rem;
+    display: flex;
+    flex-wrap: nowrap;
+}
+
+/*Styling for a checkbox grid*/
+
+
+/*Styling for errors*/
+.error{
+    color: rgb(255, 113, 113);
+    font-size: 1rem;
+    font-style: italic;
+    font-weight: 300;
+    display: flex;
+    gap: 1ch;
+    align-items: center;
+}
+
+.error::before {
+    font-family: 'Material Icons';
+    content: 'warning';
+    font-size: 1rem;
+}
+
+.inputError {
+    border-color: rgb(255, 113, 113) !important
+
+}
+
+/*Styling fort the button container*/
+
+.submitButtonContainer {
+    display: flex;
+    flex-direction: row;
+    padding: 1ch
+}
+
+@media all and (orientation: landscape) {
+    .formRegistrar {
+        border-left: 3px groove black;
+        margin-top: 1%;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+
+    }
+
+    .formGroup {
+        display: grid;
+        grid-template-columns: 20ch 1fr;
+        column-gap: 1ch;
+        border-bottom: 1px solid black;
+    }
+
+    .formGroupInputs{
+        gap: 3ch;
+        width: 50ch;
+    }
+
+    .formGroupHeader {
+        font-size: 1.3rem;
+        font-weight: 600;
+    
+    }
+
+    .checkBoxList{
+        display: grid;
+        gap: 1ch;
+        grid-template-rows: repeat(5, 1fr);
+        grid-auto-flow: column;
+    }
+    
+}
+
+@media all and (orientation: portrait) {
+    .formRegistrar {
+        border-top: 3px groove black;
+        padding: 5%;
+        align-items: center;
+        flex-direction: column
+
+    }
+
+    .formGroup {
+        border-bottom: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        gap: 4ch;
+        align-items: center;
+        width: auto;
+
+    }
+
+    .formGroupInputs{
+        gap: 3ch;
+        width: 75%;
+    }
+
+    .input input{
+        font-size: large;
+    }
+
+    .formGroupHeader {
+        font-size: 1.5rem;
+        font-weight: 600;
+        align-self: start;
+    }
+
+    .checkBoxList{
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1ch;
+        font-size: 1.6rem;
+    }
+
+    .submitButtonContainer button{
+        align-self: center
+
+    }
+}

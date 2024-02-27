@@ -1,0 +1,156 @@
+
+
+.sidebarHeader{
+    text-align: center;
+    color: #353535;
+    font-size: 2rem;
+    font-weight:bold;
+    border-bottom: 10px solid var(--line-color, grey);
+
+}
+
+
+.actionLink, .actionLink:visited {
+    text-decoration: none;
+    background-color: transparent;
+    color: inherit;
+    display: flex;
+    align-items: center;
+}
+
+.actionsList button {
+    
+    background-color: transparent;
+    border: none;
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 1.2rem;
+    font-weight: inherit;
+    color: inherit;
+    text-decoration: none;
+
+    text-align: left;
+    display: flex;
+    align-items: center;
+    transition-property: color;
+    transition-duration: 100ms;
+    
+}
+
+.actionLink::before {
+    font-family: 'Material Icons';
+    content: 'arrow_right';
+    font-size: 2rem;
+    transition-property: color;
+    transition-duration: 100ms;
+}
+
+.actionLink:active, .actionLink:focus {
+
+    background-color: transparent;
+    box-shadow: none;
+    outline: none;
+}
+
+.active {
+    color: red;
+}
+
+
+.actionLink:hover, .actionLink:hover::before {
+    color: var(--line-color);
+}
+
+
+.blue {
+    --line-color: var(--blue);
+}
+
+
+.pink{
+    --line-color: var(--pink);
+}
+
+
+.purple {
+--line-color: var(--purple);
+}
+
+
+.blue {
+    --line-color: var(--blue);
+}
+
+
+.blue {
+    --line-color: var(--blue);
+}
+
+
+
+@media (min-width:1600px) {
+    .sidebar {
+
+        display: flex;
+        flex-direction: column;
+        gap: 4ch;
+    
+        padding: 1rem;
+    
+        align-self: self-start;
+        position: sticky;
+        top: 0px;
+        right: 0;
+        bottom: 0;
+        left: 0;
+    
+        max-height: 100vh;
+        overflow-y: scroll;
+
+
+    
+    }
+
+    .sidebar-header {
+        font-size: 1.8rem;
+        padding-bottom: 3%;
+        padding-top: 5%;
+    }
+
+    .actionsList {
+        display: flex;
+        flex-direction: column;
+        gap: 2ch;
+    
+    }
+
+
+}
+
+
+@media (max-width:1599px){
+    .sidebar{
+        flex-direction: column;
+        align-items: center;
+        padding: 2ch;
+
+    }
+
+    .actionsList {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 1ch;
+        justify-content: center;
+    
+    }
+    .sidebar-header {
+        font-size: 1.8rem;
+        padding-bottom: 1%;
+        padding-top: 1%;
+    }
+
+
+}

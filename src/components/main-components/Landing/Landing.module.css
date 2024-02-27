@@ -1,0 +1,39 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/*MAIN GRID*/
+
+.main{
+    display: grid;
+    row-gap: 5ch;
+    column-gap: 5ch;
+    justify-items: center;
+    margin-top: 5vh;
+    margin-bottom: 5vh;
+    margin-left: 5vh;
+    margin-right: 5vh;
+}
+
+@media all and (min-width: 800px) {
+    .main {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+}
+@media all and (500px <= width < 800px) {
+    .main {
+        grid-template-columns: 1fr 1fr ;
+    }
+}
+
+@media all and (width < 500px ) {
+    .main {
+        grid-template-columns: 1fr ;
+    }
+}
+
+
+
+
