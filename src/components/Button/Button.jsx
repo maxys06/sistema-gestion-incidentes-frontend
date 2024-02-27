@@ -1,6 +1,6 @@
 import styles from './Button.module.css'
 
-export function Button({buttonClass, type, size, children, onClick}) {
+export function Button({buttonClass, type, size="normal", children, onClick}) {
 
     //Sizes: small, big
 

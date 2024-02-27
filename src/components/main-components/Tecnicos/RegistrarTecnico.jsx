@@ -1,24 +1,56 @@
 import styles from '../RegistrarForm/RegistrarForm.module.css'
-import { useForm} from 'react-hook-form'
-import { Form, Input, RadioButtonList,SubmitButton, Fieldset, CheckboxList} from '../RegistrarForm/RegistrarForm'
+
+import { useFieldArray, useForm} from 'react-hook-form'
+import { Form, Input, RadioButtonList, SubmitButton, Fieldset, CheckboxList, SelectList} from '../RegistrarForm/RegistrarForm'
+import { Button } from '../../Button/Button';
+
+// Services
+
+import { getAllContactTypes } from '../../../services/ContactTypeService';
+import { useEffect, useState } from 'react';
 
 export default function RegistrarTecnico(){
 
-    function onSubmit(data) {
-        console.log(data)
-    }
+    //Form stuff
 
-    const {register, handleSubmit, watch, formState: {errors,  touchedFields, isValid}} = useForm(
+    const {register, handleSubmit, watch, control,  formState: {errors,  touchedFields, isValid}} = useForm(
         {
             mode: 'onSubmit',
             defaultValues: {
-                contactMethod: 1
+                nombre: "",
+                apellido: "",
+                specialties: [],
+                contactData: [{
+                    type: "",
+                    data: ""
+                }]
+
             }
         }
     );
 
-    const selectedContactMethod = watch("contactMethod");
-    
+    const {fields, append, remove} = useFieldArray({name: "contactData", control});
+
+    function onSubmit(data) {
+        console.log(data);
+    }
+
+    // Variables for the form.
+
+    let [contactMethods, setContactMethods] = useState([]);
+
+    useEffect(() => {
+        async function getContactTypes() {
+            let response = await getAllContactTypes();
+            setContactMethods(response);
+        }
+
+        getContactTypes();
+
+        return () => {setContactMethods([])}
+
+    }, [])
+
 
     return(
         <Form submitHandler={handleSubmit} onSubmit={onSubmit}>
@@ -40,50 +72,38 @@ export default function RegistrarTecnico(){
             </Fieldset>
 
             <Fieldset header={`Datos de Contacto`}>
-                <RadioButtonList
-                    attributeName="contactMethod"
-                    register={register}
-                    buttons={
-                    [
-                        {
-                            label: "Telefono",
-                            value: 1
-                        },
-                        {
-                            label: "Email",
-                            value: 2
-                        }]
-                    }
-                    requiredMessage="Seleccione al menos un metodo de contacto"
-                    error={errors.contactMethod}
 
-                    />
-                <Input label={(selectedContactMethod == 1) ?
-                            "Numero de Telefono" :
-                            "E-Mail"
-                       }
-                       type="text"
-                       attributeName="contacto"
-                       register={register}
-                       error={errors.contacto}
-                       touched={touchedFields.contacto}
-                       validations=
-                        {
-                         (selectedContactMethod == 1) ?
-                            {
-                                required: "El numero de telefono es requerido",
-                                pattern: {
-                                    value: /^\d{10}$/,
-                                    message: "Numero de telefono invalido. Ingrese el numero sin guion"
-                                  } 
+                {
+                    fields.map((field, idx) => {
 
-                        } : {
-                                required: "El E-Mail es requerido", 
-                                pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/i,
-                                    message: "Direccion email invalida."
-                              }}
-                       }/>
+                        return(
+                            <div key={field.id} style={{display: 'flex', gap: '1ch', alignItems: 'start'}}>
+                                <SelectList
+                                    attributeName={`contactData.${idx}.type`}
+                                    options={contactMethods}
+                                    register={register}
+                                    selectOptionMessage={"Metodo de Contacto"}
+                                />
+                                <Input 
+                                    label={"Dato de contacto"}
+                                    type='text'
+                                    attributeName={`contactData.${idx}.data`}
+                                    register={register}
+                                    validations={{required: "El dato de contacto es requerido"}}
+                                    error={errors.contactData}
+                                />
+
+                                {idx > 0 && 
+                                <Button type="button" size='small' buttonClass={'delete'} onClick={() => remove(idx)}>
+                                    Eliminar
+                                </Button>}
+                            </div>
+                        )
+                        
+                })}
+                    <Button type="button" 
+                            onClick={() => append({contactData: {type: "", data: ""}})}
+                            buttonClass='add'>Nuevo metodo de contacto</Button>
             </Fieldset>
 
             <Fieldset header={`Especialidades`}>
@@ -107,9 +127,6 @@ export default function RegistrarTecnico(){
                     />
             </Fieldset>
             <SubmitButton description={"Registrar Tecnico"} isValid={isValid} errors={errors}/>
-            
-
         </Form>
     )
-
 }

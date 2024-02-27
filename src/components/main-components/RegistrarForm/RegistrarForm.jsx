@@ -103,6 +103,7 @@ export function CheckboxList({attributeName, register, buttons, error, requiredM
     )
 }
 
+
 export function SubmitButton({description, isValid, errors}) {
     return (
         <div className={styles.submitButtonContainer}>
@@ -119,4 +120,34 @@ export function ErrorMessage({children}) {
     return (
         <div className={styles.error}>{children}</div>
     )
+}
+
+export function SelectList({attributeName, options, selectOptionMessage, register, requiredMessage=undefined}) {
+    /*options: [
+            {
+                value
+                label
+            }
+        ]
+    */
+
+        return (
+        
+            <div>
+                <select className={styles.select}
+                        {...register(attributeName, {required: (requiredMessage != undefined ) ? requiredMessage : "This field is required!" })}>
+                    <option value="" disabled hidden key="empty">{selectOptionMessage}</option>
+                    {options.map((o) => {
+                        return (
+                            <option key={o.value} value={o.value}>{o.label}</option>
+                        )
+                    })}
+                </select>
+
+            </div>
+
+        )
+
+
+
 }
