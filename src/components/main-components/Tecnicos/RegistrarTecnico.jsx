@@ -1,8 +1,7 @@
-import styles from '../RegistrarForm/RegistrarForm.module.css'
 
 import { useFieldArray, useForm} from 'react-hook-form'
-import { Form, Input, RadioButtonList, SubmitButton, Fieldset, CheckboxList, SelectList} from '../RegistrarForm/RegistrarForm'
-import { Button } from '../../Button/Button';
+import { Form, Input, RadioButtonList, SubmitButton, Fieldset, CheckboxList, SelectList} from '../../generic-components/RegistrarForm/RegistrarForm'
+import { Button } from '../../generic-components/Button/Button';
 
 // Services
 
@@ -13,7 +12,11 @@ export default function RegistrarTecnico(){
 
     //Form stuff
 
-    const {register, handleSubmit, watch, control,  formState: {errors,  touchedFields, isValid}} = useForm(
+    const {
+        register,
+        handleSubmit,
+        watch, control,
+        formState: {errors,  touchedFields, isValid, isSubmitting, isSubmitSuccessful}} = useForm(
         {
             mode: 'onSubmit',
             defaultValues: {
@@ -27,17 +30,27 @@ export default function RegistrarTecnico(){
 
             }
         }
-    );
-
+    );    
+    //The contacts are part of a dynamic field.
     const {fields, append, remove} = useFieldArray({name: "contactData", control});
 
-    console.log("errors", errors)
+    async function onSubmit(data) { 
+        
+        async function backendPetition(data) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    alert(data);
+                    resolve();
+                }, 2000);
+            });
+        }
+        console.log("HERE", data)
 
-    function onSubmit(data) {
-        console.log(data);
-        console.log(watchContactData[1]);
+        await backendPetition(data);
+    
         
     }
+    
 
     // I'm watching the contactData field. That field, is an array of Objects of {type, data}
     // watchContactData is an array that has all the fields of the contactData array, with their updated values.
@@ -62,6 +75,7 @@ export default function RegistrarTecnico(){
     }, [])
 
 
+    console.log(isSubmitting)
 
     return(
         <Form submitHandler={handleSubmit} onSubmit={onSubmit}>
@@ -122,7 +136,7 @@ export default function RegistrarTecnico(){
                 })}
                     <Button type="button" 
                             onClick={() => 
-                                append({type: "telefono", data: ""})}
+                                append({type: "", data: ""})}
                             buttonClass='add'>Nuevo metodo de contacto</Button>
             </Fieldset>
 
@@ -146,7 +160,9 @@ export default function RegistrarTecnico(){
 
                     />
             </Fieldset>
-            <SubmitButton description={"Registrar Tecnico"} isValid={isValid} errors={errors}/>
+            <SubmitButton description={"Registrar Tecnico"} isValid={isValid} errors={errors}
+                          isSubmitting={isSubmitting}
+                          submittingMessage={"Registrando tecnico..."}/>
         </Form>
     )
 }

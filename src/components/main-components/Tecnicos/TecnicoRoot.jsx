@@ -14,9 +14,12 @@ export function TecnicoRoot() {
                 <SidebarHeader color="blue" title="Tecnicos"/>
                 <SidebarActionList>
                     <SidebarElement description="Consultar Tecnicos"
-                                    to="/tecnicos"/>
+                                    to="/tecnicos"
+                                    />
                     <SidebarElement description="Registrar nuevo Tecnico"
-                                    to="/tecnicos/registrar"/>
+                                    to="/tecnicos/registrar"
+                                    
+                                    />
                 </SidebarActionList>
 
             </Sidebar>

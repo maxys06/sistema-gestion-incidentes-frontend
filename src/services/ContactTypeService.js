@@ -20,7 +20,7 @@ let contactTypes = [
 
     required: {
       value: true,
-      message: "Por favor, ingrese un e-mail,"
+      message: "Por favor, ingrese un e-mail."
     }
 
   }

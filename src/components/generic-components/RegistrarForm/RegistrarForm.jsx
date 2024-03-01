@@ -1,4 +1,4 @@
-import { Button } from "../../Button/Button";
+import { Button } from "../Button/Button";
 import styles from "./RegistrarForm.module.css";
 
 export function Form({submitHandler, onSubmit, children}) {
@@ -104,14 +104,15 @@ export function CheckboxList({attributeName, register, buttons, error, requiredM
 }
 
 
-export function SubmitButton({description, isValid, errors}) {
+export function SubmitButton({description, isValid, errors, isSubmitting}) {
     return (
         <div className={styles.submitButtonContainer}>
-            <Button type="submit" buttonClass='register' size='big' >{description}</Button>
+            <Button disabled={isSubmitting} type="submit" buttonClass='register' size='big' >{description}</Button>
             {(!isValid && Object.keys(errors).length > 0) 
                     && <ErrorMessage>
                             Verifique los datos ingresados.
-                        </ErrorMessage>}
+                       </ErrorMessage>}
+            {isSubmitting && <p>Se esta registrando el tecnico.</p>}
         </div>
     )
 }

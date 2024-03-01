@@ -3,7 +3,7 @@ import styles from "./Sidebar.module.css";
 
 export default function SidebarElement({description, to}) {
     return (
-        <NavLink to={to} className={styles.actionLink}
+        <NavLink to={to} end className={styles.actionLink}
                  style={({ isActive, isPending, isTransitioning }) => {
                     return {
                     fontWeight: isActive ? "bold" : "",

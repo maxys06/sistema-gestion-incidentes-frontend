@@ -1,0 +1,186 @@
+.consultarContainer{
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding: 2ch;
+  gap: 1rem;
+  
+}
+
+.consultarHeader {
+  font-size: 2rem;
+  font-weight: bold;
+  text-decoration: underline;
+  text-decoration-thickness: 8px;
+  text-underline-offset: 5px;
+  text-decoration-color: var(--blue);
+
+}
+
+.resultScreen {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  padding: 0rem;
+  height: 100%;
+  width: 100%;
+
+
+}
+
+.table {
+  table-layout: fixed;
+
+  border-spacing: 0;
+  width: 100%;
+  border-top: 2px solid rgb(170, 170, 170);
+  border-left: 2px solid rgb(170, 170, 170);
+  border-right: 2px solid rgb(170, 170, 170);;
+  border-radius: 11px;
+
+}
+
+.table caption {
+  display: none;
+}
+
+
+/*Header*/
+.tableHeader {
+  font-size: 1rem;
+  font-style: oblique;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  text-align: start;
+}
+
+.cellHeader{
+  position: sticky;
+  top: 0px;
+  background-color: rgb(172, 255, 207);
+  border-right: 1px solid gray;
+  border-bottom: 1px groove gray;
+
+  padding-top: 0rem;
+  padding-bottom: 0rem;
+  padding: 0;
+}
+
+.sortingButton {
+  width: 100%;
+  height: 100%;
+  background-color: rgb(172, 255, 207);
+  border-right-color: rgb(3, 104, 0);
+
+  border: 0px;
+  font-size: 1rem;
+  font-weight: bold;
+  text-align: start;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+
+}
+
+.sortingButton::after {
+  font-family: 'Material Icons';
+  content: 'swap_vert';
+  margin-left: auto;
+}
+
+
+.cellHeader:first-of-type  .sortingButton{
+  border-top-left-radius: 10px;
+}
+
+.cellHeader:first-of-type {
+  border-top-left-radius: 10px;
+  width: 5%;
+}
+
+.cellHeader:last-of-type {
+  border-top-right-radius: 10px;
+  width: 20%;
+}
+
+.sorted {
+  background-color: rgb(0, 183, 255);
+}
+
+.sortingButton.sorted.ascSort::after {
+  font-family: 'Material Icons';
+  font-size: 1rem;
+  content: 'arrow_drop_down';
+  margin-left: auto;
+}
+
+.sortingButton.sorted.descSort::after {
+  font-size: 1rem;
+
+  font-family: 'Material Icons';
+  content: 'arrow_drop_up';
+  margin-left: auto;
+}
+
+/*Cells*/
+
+.cell{
+  border-right: 1px solid rgb(185, 185, 185);
+  background-color: rgb(255, 255, 255);
+  transition-property: background-color;
+  transition-duration: 100ms;
+  padding-top: .5rem;
+  padding-bottom: .5rem;
+  padding-left: .5rem;
+  text-align: left;
+  word-wrap: break-word;
+}
+
+.cell:last-of-type{
+  width: 20%;
+  
+
+}
+
+.cell:first-of-type{
+  width: 3rem
+}
+
+
+
+.row:last-of-type .cell:first-of-type {
+  border-bottom-left-radius: 10px;
+}
+
+
+.row:last-of-type .cell:last-of-type {
+  border-bottom-right-radius: 10px;
+}
+
+
+.row:nth-child(even) .cell{
+  background-color: rgb(218, 218, 218);
+}
+
+.row:hover .cell {
+  background-color: var(--grid-item-hover-color);
+}
+
+.actionButtonList {
+
+  justify-self: center;
+  display: flex;
+  flex-wrap: wrap;
+
+  gap: 0.5rem;
+
+
+}
+
+
+@media (orientation: portrait) {
+  .consultarContainer{
+      align-items: center
+  };
+}
