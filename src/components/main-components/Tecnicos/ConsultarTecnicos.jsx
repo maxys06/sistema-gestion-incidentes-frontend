@@ -1,16 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CheckboxList, ConsultarMenuWrapper, Fieldset, HeaderRow, Input, QueryMenu, ResultTable, DataRow, HeaderCell} from "../../generic-components/Consultar/Consultar";
 
+import {getAllTecnicos} from "../../../services/TecnicosService";
 
-let tecnicosArray = [
-    {id: 1, nombre: "Maximo",apellido: "Sanchez",tipo:'hola', nro:'2133123123213' },
-    {id: 2, nombre: "Maximoooosoasdaoasdasdasdasdasdasdasdasdasdaosd",apellido: "Sanchez",tipo:'hola', nro:'2133123123213' },
-    {id: 3, nombre: "Luciana Agustina", apellido: "Gimenez",tipo:'hola', nro:'2133123123213' },
-    {id: 4, nombre: "Cristian", apellido: "Perez",tipo:'hola', nro:'2133123123213' }]
+
 
 export default function ConsultarTecnicos(){
 
-    let [tecnicos, setTecnicos] = useState(tecnicosArray);
+    let [tecnicos, setTecnicos] = useState([]);
     let [sortedAttribute, setSortedAttribute] = useState('');
     let [sortOrder, setSortOrder] = useState('');
 
@@ -28,7 +25,6 @@ export default function ConsultarTecnicos(){
 
         return nextSortOrder;
     }
-
 
 
     function sortTecnicos(attribute, comparator, sortOrder) {
@@ -84,6 +80,17 @@ export default function ConsultarTecnicos(){
     function handleDelete(id) {
         console.log(id);
     }
+    
+    //Load all technicians when entering the site.
+
+    useEffect(() => {
+
+        async function loadTecnicos() {
+            let tecnicos = await getAllTecnicos();
+            setTecnicos(tecnicos)
+        }
+        loadTecnicos();
+    }, [])
 
     return (
         <ConsultarMenuWrapper header="Consulta de Tecnicos">
@@ -104,14 +111,12 @@ export default function ConsultarTecnicos(){
                     <HeaderCell onSort={handleGenericSort} attributeName='id' isCurrentlySorted={sortedAttribute=='id'} sortingOrientation={sortOrder}>ID</HeaderCell>
                     <HeaderCell onSort={handleGenericSort} attributeName='nombre' isCurrentlySorted={sortedAttribute=='nombre'} sortingOrientation={sortOrder}>Nombre</HeaderCell>
                     <HeaderCell onSort={handleGenericSort} attributeName='apellido' isCurrentlySorted={sortedAttribute=='apellido'} sortingOrientation={sortOrder}>Apellido</HeaderCell>
-                    <HeaderCell onSort={handleGenericSort} attributeName='tipo' isCurrentlySorted={sortedAttribute=='tipo'} sortingOrientation={sortOrder}>Tipo</HeaderCell>
-                    <HeaderCell onSort={handleGenericSort} attributeName='numero' isCurrentlySorted={sortedAttribute=='numero'} sortingOrientation={sortOrder}>Numero</HeaderCell>
                 </HeaderRow>
 
                 <tbody>
                     {tecnicos.map(t => {
                         return(
-                            <DataRow key={t.id} dataId={t.id} fields={[t.id, t.nombre, t.apellido, t.tipo, t.nro]} onDelete={handleDelete}/>
+                            <DataRow key={t.id} dataId={t.id} fields={[t.id, t.nombre, t.apellido]} onDelete={handleDelete}/>
                         )
                     })}
                 </tbody>

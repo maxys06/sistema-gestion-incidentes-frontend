@@ -104,15 +104,14 @@ export function CheckboxList({attributeName, register, buttons, error, requiredM
 }
 
 
-export function SubmitButton({description, isValid, errors, isSubmitting}) {
+export function SubmitButton({description, isValid, errors}) {
     return (
         <div className={styles.submitButtonContainer}>
-            <Button disabled={isSubmitting} type="submit" buttonClass='register' size='big' >{description}</Button>
+            <Button type="submit" buttonClass='register' size='big' >{description}</Button>
             {(!isValid && Object.keys(errors).length > 0) 
                     && <ErrorMessage>
                             Verifique los datos ingresados.
                        </ErrorMessage>}
-            {isSubmitting && <p>Se esta registrando el tecnico.</p>}
         </div>
     )
 }

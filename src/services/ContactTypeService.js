@@ -1,39 +1,28 @@
-let contactTypes = [
+import { $API_ROUTE, $API_CONTACTOS, $API_TIPOS_CONTACTO } from "../config";
+import TipoContacto  from "../models/TipoContacto.js";
+import axios from "axios";
+import { httpService } from "./httpService.js";
 
-  {
-    value: "telefono",
-    label: "Telefono",
-    pattern: {
-      value: /^\d{11}$/,
-      message: "Por favor, ingrese un numero de telefono valido de no mas de 11 digitos."
-    },
-    required: {value: true, message: "Por favor, ingrese un numero de telefono.",}
-  },
-  {
-    value: "email",
-    label: "E-mail",
+let contactTypes = [];
 
-    pattern: {
-      value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      message: "Por favor, ingrese un e-mail valido."
-    },
+let route = `${$API_ROUTE}${$API_CONTACTOS}${$API_TIPOS_CONTACTO}`;
 
-    required: {
-      value: true,
-      message: "Por favor, ingrese un e-mail."
-    }
 
-  }
-
-]
 
 export async function getAllContactTypes() {
-  return contactTypes
+  
+
+  try {
+    let response = await httpService.get(route);
+    let tiposContacto = response.data.map(d => new TipoContacto(d.idTipoContacto, d.tipo, d.regex, d.mensajeError));
+    contactTypes = tiposContacto;
+    return tiposContacto;
+  }
+  catch(err) {
+    return []
+  }
 }
 
-export function getContactTypeByValue(value) {
-  let contact = contactTypes.find(c => c.value == value);
-  return contact
-}
+
 
 

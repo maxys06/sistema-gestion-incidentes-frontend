@@ -4,6 +4,7 @@ import Sidebar  from "../../Sidebar/Sidebar"
 import SidebarHeader  from "../../Sidebar/SidebarHeader"
 import SidebarActionList from "../../Sidebar/SidebarActionList"
 import SidebarElement from "../../Sidebar/SidebarElement"
+import { ErrorBoundary } from "react-error-boundary"
 
 
 export function TecnicoRoot() {
@@ -23,7 +24,9 @@ export function TecnicoRoot() {
                 </SidebarActionList>
 
             </Sidebar>
+
             <Outlet/>
+                
         </div>
 
     )

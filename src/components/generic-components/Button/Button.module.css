@@ -46,8 +46,8 @@
 }
 
 .myButton:hover, .myButton:focus {
-    background-color: var(--button-bg-hover-color, gray);
-    box-shadow: 0px 0px 10px var(--button-bg-hover-shadow-color, gray);
+    background-color: var(--button-bg-hover-color, rgb(156, 156, 156));
+    box-shadow: 0px 0px 5px var(--button-bg-hover-shadow-color, gray);
     cursor: pointer;
 }
 
@@ -55,9 +55,7 @@
     background-color: var(--button-bg-click-color);
 }
 
-.myButton:focus {
-    box-shadow: 0px 0px 10px var(--button-bg-hover-shadow-color, gray);
-}
+
 
 .add {
     --button-bg-color: rgba(0, 68, 114, 0.692);
@@ -105,4 +103,20 @@
     --button-bg-hover-shadow-color: rgb(27, 165, 207);
     --button-bg-click-color: rgb(12, 66, 83);
     --button-icon: 'visibility';
+}
+
+.goBack {
+    color: black;
+    --button-bg-color: rgb(250, 204, 0);
+    --button-bg-hover-color: rgb(173, 147, 0);
+    --button-bg-hover-shadow-color: rgb(165, 113, 0);
+    --button-bg-click-color: rgb(97, 66, 0);
+    --button-icon: 'undo'
+}
+
+.accept {
+    --button-bg-color: rgb(41, 109, 255);
+    --button-bg-hover-color: rgb(92, 157, 255);
+    --button-bg-hover-shadow-color: rgb(27, 111, 207);
+    --button-bg-click-color: rgb(12, 51, 83);
 }

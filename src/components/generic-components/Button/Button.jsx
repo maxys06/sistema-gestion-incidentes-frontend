@@ -1,7 +1,7 @@
 import styles from './Button.module.css'
 import { Link } from 'react-router-dom'
 
-export function Button({buttonClass, type, size="normal", children, onClick, disabled=false}) {
+export function Button({buttonClass, type, size="normal", children, onClick, disabled=false, autoFocus=false}) {
 
     //Sizes: small, big
 
@@ -9,6 +9,7 @@ export function Button({buttonClass, type, size="normal", children, onClick, dis
             onClick={onClick}
             type={type}
             disabled={disabled}
+            autoFocus={autoFocus}
             className={`${styles.myButton} ${styles[size]} ${styles[buttonClass]}`}>
                 {children}
             </button>
