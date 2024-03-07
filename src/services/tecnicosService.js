@@ -1,9 +1,10 @@
 import { $API_TECNICO } from '../config';
 import { httpService } from './httpService';
 import { tecnicoMapper } from './mappers/TecnicoMapper';
+import qs from 'qs';
 
 
-export async function getAllTecnicos() {
+async function getAllTecnicos() {
 
   try {
     let response = await httpService.get($API_TECNICO);
@@ -16,34 +17,27 @@ export async function getAllTecnicos() {
   }
 }
 
-export async function getTecnicoById(id) {
-  try {
+async function getTecnicoById(id) {
     let response = await httpService.get(`${$API_TECNICO}/${id}`, {
     })
     let tecnico = tecnicoMapper(response.data);
     console.log(tecnico)
     return tecnico
-
-
-  }
-  catch(err) {
-    throw("Error al buscar los datos \n" + err)
-  }
 }
 
-export async function postTecnico(data) {
+async function postTecnico(data) {
 
-  try {
-    console.log(data);
-    let response = await httpService.post(TECNICOS_URL, data,  {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    });
+    let response = await httpService.post($API_TECNICO, data);
     return tecnicoMapper(response.data);
   }
-  catch(err){
-    console.log("Error al postear tecnico: ", err)
-  }
+
+async function filterTecnicos(filters) {
+  let parsedFilter = qs.stringify(filters, { arrayFormat: 'repeat' })
+  let response = await httpService.get(`${$API_TECNICO}/filtros?${parsedFilter}`)
+  let tecnicos = response.data.map(d => tecnicoMapper(d));
+  return tecnicos
 }
 
+const tecnicosService = {postTecnico, getTecnicoById, getAllTecnicos, filterTecnicos}
+
+export default tecnicosService;

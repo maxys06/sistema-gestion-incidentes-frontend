@@ -14,11 +14,11 @@ export function ConsultarMenuWrapper({children, header}) {
   )
 }
 
-export function QueryMenu({children}) {
+export function QueryMenu({submitHandler, onSubmit, children}) {
   return (
-    <form className={queryStyles.filterForm}>
+    <form onSubmit={submitHandler(onSubmit)} className={queryStyles.filterForm}>
       <div className={queryStyles.filterButtonContainer}>
-        <Button size='big' type={'button'} buttonClass={'search'}>
+        <Button size='big' type={'submit'} buttonClass={'search'}>
           Buscar
         </Button>
       </div>
@@ -41,26 +41,29 @@ export function Fieldset({children, header}) {
   )
 }
 
-export function Input({attributeName, type, label}) {
+export function Input({register, attributeName, type, label}) {
   return (
     <div className={queryStyles.input}>
       <label htmlFor={attributeName}>{label}</label>
-      <input id={attributeName}/>
+      <input type={type} id={attributeName} {...register(attributeName)}/>
     </div>
   )
 }
 
-export function CheckboxList({attributeName, register, buttons, error, requiredMessage}) {
+export function CheckboxList({attributeName, register, buttons}) {
   return (
           <div className={queryStyles.checkBoxList}>
               {
                   buttons.map((b, index) => {
                       return (
                           <div key={index} className={queryStyles.checkBox}>
-                              <input 
+                              <input
                                   id={b.label}
                                   type='checkbox'
-                                  value={b.value}/>
+                                  value={b.value}
+                                  {...register(attributeName)}
+                                  
+                                  />
                               <label htmlFor={b.label}>
                                   {b.label}
                               </label>

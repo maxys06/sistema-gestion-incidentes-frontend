@@ -11,7 +11,7 @@ import { httpService } from "./httpService";
 
 */
 
-export async function getAllSpecialties() {
+async function getAllSpecialties() {
 
   let route = `${$API_ROUTE}${$API_ESPECIALIDADES}`
 
@@ -25,3 +25,8 @@ export async function getAllSpecialties() {
   }
 
 }
+
+
+const specialtyService = {getAllSpecialties};
+
+export default specialtyService

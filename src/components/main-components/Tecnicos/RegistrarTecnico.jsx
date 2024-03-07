@@ -5,22 +5,39 @@ import { Button } from '../../generic-components/Button/Button';
 
 // Services
 
-import { getAllContactTypes} from '../../../services/ContactTypeService';
+import contactTypeService from '../../../services/contactTypeService';
 import { useEffect, useState, useRef } from 'react';
-import { getAllSpecialties } from '../../../services/EspecialidadesService';
-import { postTecnico } from '../../../services/TecnicosService';
-import { Navigate} from 'react-router-dom';
+import specialtyService  from '../../../services/specialtyService';
+import tecnicosService from '../../../services/tecnicosService';
+import { Navigate, useLoaderData} from 'react-router-dom';
 import modalService from '../../../services/modalService';
-import { ErrorBoundary } from 'react-error-boundary';
+
+export async function loadTecnicoFormData() {
+    
+    let data = {};
+    try {
+        data.specialties = await specialtyService.getAllSpecialties();
+        data.contactMethods = await contactTypeService.getAllContactTypes();
+    }
+    catch(err) {
+        throw(err);
+    }
+        
+    return data;
+      
+}
 
 export default function RegistrarTecnico(){
+
+    //Get the data from the loader.
+    let {specialties, contactMethods} = useLoaderData();
+
 
     //Form stuff
 
     const {
         register,
         handleSubmit,
-        setError,
         watch, control,
         formState: {errors,  touchedFields, isValid}} = useForm(
         {
@@ -45,9 +62,6 @@ export default function RegistrarTecnico(){
     let watchContactData = watch('contactos');
 
     // Normal react.
-
-    let [contactMethods, setContactMethods] = useState([]);
-    let [specialties, setSpecialties] = useState([]);
     let [isSubmitSucessful, setSubmitSucessful] = useState(false)
     let tecnicoRegistrado = useRef({});
 
@@ -55,42 +69,18 @@ export default function RegistrarTecnico(){
     //We adapt the specialties attributes so that we can use it in our select.
     let formSpecialties =specialties.map(s => {return({label: s.nombre, value: s.idEspecialidad})})
 
-    //We adapt the contact type to be used in our select:
-
-
-    //Get all the contact types  and all available specialties
-    useEffect(() => {
-        async function getContactTypes() {
-            try {
-                let response = await getAllContactTypes();
-                setContactMethods(response)
-            }
-            catch(error) {
-                setContactMethods([]);
-            }
-        }
-
-        async function loadEspecialidades() {
-                let specialties = await getAllSpecialties();
-                setSpecialties(specialties);
-        }
-
-        getContactTypes();
-        loadEspecialidades();
-
-
-    }, [])
-
     //ON SUBMIT FUNCTION.
 
     async function onSubmit(data) { 
         
         async function submitTecnico(data) {
             try {
-                let tecnico = await postTecnico(data);
+                let tecnico = await tecnicosService.postTecnico(data);
                 tecnicoRegistrado.current.id = tecnico.id;
-                setSubmitSucessful(true);}
-            catch(error) {
+                setSubmitSucessful(true);
+            }
+            catch(err) {
+                alert(err)
                 setSubmitSucessful(false);
             }
         }
@@ -113,11 +103,6 @@ export default function RegistrarTecnico(){
     if(isSubmitSucessful) {
         return <Navigate to={`/tecnicos/${tecnicoRegistrado.current.id}`}/>
     }
-
-    if(specialties.length == 0 || contactMethods.length == 0) {
-        return <div>ERROR</div>
-    }
-
 
     return(
             <Form submitHandler={handleSubmit} onSubmit={onSubmit}>

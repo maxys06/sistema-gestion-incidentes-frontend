@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { Attribute, Info, InfoGroup, InfoList, ListElement } from "../../generic-components/Info/Info";
 import { useEffect, useState } from "react";
-import { getTecnicoById } from "../../../services/TecnicosService";
+import tecnicosService from "../../../services/tecnicosService.js";
 import Tecnico  from "../../../models/Tecnico.js";
 
 export function InfoTecnico() {
@@ -13,7 +13,7 @@ export function InfoTecnico() {
   
   useEffect(()=> {
     async function loadTecnico() {
-      let tecnico = await getTecnicoById(tecnicoId);
+      let tecnico = await tecnicosService.getTecnicoById(tecnicoId);
       setTecnico(tecnico);
     }
     loadTecnico();

@@ -1,5 +1,4 @@
 //Test imports
-import { getAllTecnicos } from './services/TecnicosService';
 
 //Libraries imports/
 
@@ -14,12 +13,14 @@ import './GlobalStyle.css'
 //Component imports
 import Root from "./components/Root"
 import Landing from './components/main-components/Landing/Landing';
-import ConsultarTecnicos from './components/main-components/Tecnicos/ConsultarTecnicos';
-import RegistrarTecnico from './components/main-components/Tecnicos/RegistrarTecnico';
+import ConsultarTecnicos, { loadConsultaTecnicos} from './components/main-components/Tecnicos/ConsultarTecnicos';
+import RegistrarTecnico, {loadTecnicoFormData} from './components/main-components/Tecnicos/RegistrarTecnico';
 import { TecnicoRoot } from './components/main-components/Tecnicos/TecnicoRoot';
 import { InfoTecnico } from './components/main-components/Tecnicos/InfoTecnico';
 import { TestComponent } from './components/main-components/TestComponent';
-import { ErrorBoundary } from 'react-error-boundary';
+import { ErrorScreen } from './components/generic-components/ErrorScreen/ErrorScreen';
+
+
 
 const routes = [{
 
@@ -33,7 +34,10 @@ const routes = [{
         element: <TecnicoRoot/>,
         children: [
           {
-            index: true, element: <ConsultarTecnicos/>
+            index: true, 
+            element: <ConsultarTecnicos/>,
+            loader: loadConsultaTecnicos,
+            errorElement: <ErrorScreen title={"Ha ocurrido un error"}/>
           },
           {
             path: '/tecnicos/:tecnicoId',
@@ -42,6 +46,8 @@ const routes = [{
           {
             path: '/tecnicos/registrar',
             element: <RegistrarTecnico/>,
+            loader: loadTecnicoFormData,
+            errorElement: <ErrorScreen title={"Ha ocurrido un error"}/>
           },
           {path: '/tecnicos/edit/:tecnicoId',
            element: <>Nothing here brotha</>}

@@ -8,6 +8,7 @@ export function tecnicoMapper(data) {
   let id = data.idTecnico;
   let nombre = data.nombre;
   let apellido = data.apellido;
+
   let contactos = data.contactos.map(c => new Contacto(c.tipoContacto, c.contacto));
   let especialidades = data.especialidades.map(
     (e) => {
