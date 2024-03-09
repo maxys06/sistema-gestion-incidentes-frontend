@@ -3,6 +3,7 @@ import modalService from "../../services/modalService";
 import styles from "./Modal.module.css";
 
 import {Button} from "../generic-components/Button/Button"
+import { useNavigate } from "react-router-dom";
 
 export function Modal() {
 
@@ -39,6 +40,8 @@ export function Modal() {
   }, [isShowing])
 
 
+  let navigate = useNavigate();
+
   //We show a modal, with these attributes.
 
   function Show(show, {title, body, type, action, cancelText} = {}) {
@@ -63,6 +66,9 @@ export function Modal() {
     if (type == 'block') {
       e.preventDefault();
     }
+    else {
+      Show(false)
+    }
   }
 
   function handleClose() {
@@ -74,7 +80,13 @@ export function Modal() {
     await actionButton.handler()
   }
 
-  let modalFooterContent, modalClass;
+  function handleRedirect() {
+    handleClose();
+    navigate(actionButton.route);
+  }
+
+
+  let modalFooterContent, modalClass, closeHandler;
 
   switch(type) {
     case('block'): {
@@ -82,6 +94,13 @@ export function Modal() {
       modalFooterContent = <></>
       break
     }
+
+    case('redirect'): {
+      modalClass = 'info'
+      modalFooterContent = <Button buttonClass={'accept'} onClick={handleRedirect} autoFocus={true}>Aceptar</Button>
+      break
+    }
+
     case('info'): {
       modalClass = 'info'
       modalFooterContent = <Button buttonClass={'accept'} onClick={handleClose} autoFocus={true}>Aceptar</Button>
@@ -116,11 +135,11 @@ export function Modal() {
 
   return (
       <dialog
-        onCancel={handleCancel} ref={modalDialog}
+        onCancel={type != 'redirect' ? handleCancel : handleRedirect} ref={modalDialog}
         className={styles.dialog}>
           <header className={`${styles.header}  ${styles[modalClass]}`}>
             {header}
-            {type !== 'block' && <button className={`${styles.closeButton}`} onClick={handleClose}><span className="material-symbols-out">close</span></button>}
+            {type !== 'block' && <button className={`${styles.closeButton}`} onClick={type != 'redirect' ? handleClose : handleRedirect}><span className="material-symbols-out">close</span></button>}
           </header>
           <section className={`${styles.section} ${styles[modalClass]}`}>
             {message}

@@ -38,6 +38,16 @@ async function filterTecnicos(filters) {
   return tecnicos
 }
 
-const tecnicosService = {postTecnico, getTecnicoById, getAllTecnicos, filterTecnicos}
+async function deleteTecnico(id) {
+  let response = await httpService.delete(`${$API_TECNICO}/${id}`);
+  return tecnicoMapper(response.data);
+}
+
+async function editTecnico(id, data) {
+  let response = await httpService.put(`${$API_TECNICO}/${id}`, data);
+  return tecnicoMapper(response.data);
+}
+
+const tecnicosService = {postTecnico, getTecnicoById, getAllTecnicos, filterTecnicos, deleteTecnico, editTecnico}
 
 export default tecnicosService;

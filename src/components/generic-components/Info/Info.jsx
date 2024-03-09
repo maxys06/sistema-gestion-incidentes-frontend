@@ -1,12 +1,12 @@
-import { LinkButton, Button } from '../Button/Button';
+import { LinkButton, Button, GoBackButton } from '../Button/Button';
 import styles from './Info.module.css';
 
-export function Info({children, handleDelete}) {
+export function Info({children, handleDelete, dataId}) {
   return (
   <div className={styles.infoContainer}>
     <div className={styles.actions}>
-      <LinkButton to=".." size='normal' buttonClass={'goBack'}>Volver</LinkButton>
-      <LinkButton to=".." size='normal' buttonClass={'edit'}>Editar</LinkButton>
+      <GoBackButton size='normal'>Volver</GoBackButton>
+      <LinkButton to={`../edit/${dataId}`} size='normal' buttonClass={'edit'}>Editar</LinkButton>
       <Button onClick={handleDelete} size='normal' buttonClass={'delete'}>Eliminar</Button>
     </div>
     <div className={styles.content}>{children}</div>

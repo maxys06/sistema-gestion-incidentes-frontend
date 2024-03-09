@@ -1,4 +1,4 @@
-import { Button } from "../Button/Button";
+import { Button, GoBackButton } from "../Button/Button";
 import styles from "./RegistrarForm.module.css";
 
 export function Form({submitHandler, onSubmit, children}) {
@@ -86,6 +86,7 @@ export function CheckboxList({attributeName, register, buttons, error, requiredM
                                     type='checkbox'
                                     name={attributeName}
                                     value={b.value}
+                                    defaultChecked={b.isChecked}
                                     {...register(attributeName, { required: requiredMessage }) }/>
                                 <label htmlFor={b.label}>
                                     {b.label}
@@ -104,10 +105,11 @@ export function CheckboxList({attributeName, register, buttons, error, requiredM
 }
 
 
-export function SubmitButton({description, isValid, errors}) {
+export function FormButtons({description, isValid, errors, submitType}) {
     return (
         <div className={styles.submitButtonContainer}>
-            <Button type="submit" buttonClass='register' size='big' >{description}</Button>
+            <GoBackButton size='normal' >{"Volver"}</GoBackButton>
+            <Button type="submit" buttonClass={submitType} size='big' >{description}</Button>
             {(!isValid && Object.keys(errors).length > 0) 
                     && <ErrorMessage>
                             Verifique los datos ingresados.

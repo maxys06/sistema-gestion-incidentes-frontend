@@ -1,22 +1,7 @@
-.consultarContainer{
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-  width: 100%;
-  padding: 2ch;
-  gap: 1rem;
-  
+:root {
+  --headerColor: rgba(228, 255, 236, 0.938);
 }
 
-.consultarHeader {
-  font-size: 2rem;
-  font-weight: bold;
-  text-decoration: underline;
-  text-decoration-thickness: 8px;
-  text-underline-offset: 5px;
-  text-decoration-color: var(--blue);
-
-}
 
 .resultScreen {
   display: flex;
@@ -35,9 +20,7 @@
   border-spacing: 0;
   width: 100%;
   border-top: 2px solid rgb(170, 170, 170);
-  border-left: 2px solid rgb(170, 170, 170);
-  border-right: 2px solid rgb(170, 170, 170);;
-  border-radius: 11px;
+
 
 }
 
@@ -58,7 +41,7 @@
 .cellHeader{
   position: sticky;
   top: 0px;
-  background-color: rgb(172, 255, 207);
+  background-color: var(--headerColor);
   border-right: 1px solid gray;
   border-bottom: 1px groove gray;
 
@@ -70,9 +53,10 @@
 .sortingButton {
   width: 100%;
   height: 100%;
-  background-color: rgb(172, 255, 207);
+  background-color: var(--headerColor);
   border-right-color: rgb(3, 104, 0);
-
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
   border: 0px;
   font-size: 1rem;
   font-weight: bold;
@@ -90,17 +74,13 @@
 }
 
 
-.cellHeader:first-of-type  .sortingButton{
-  border-top-left-radius: 10px;
-}
+
 
 .cellHeader:first-of-type {
-  border-top-left-radius: 10px;
   width: 5%;
 }
 
 .cellHeader:last-of-type {
-  border-top-right-radius: 10px;
   width: 21%;
 }
 
@@ -149,14 +129,6 @@
 
 
 
-.row:last-of-type .cell:first-of-type {
-  border-bottom-left-radius: 10px;
-}
-
-
-.row:last-of-type .cell:last-of-type {
-  border-bottom-right-radius: 10px;
-}
 
 
 .row:nth-child(even) .cell{

@@ -1,16 +1,21 @@
 import { useEffect, useState } from "react";
-import { CheckboxList, ConsultarMenuWrapper, Fieldset, HeaderRow, Input, QueryMenu, ResultTable, DataRow, HeaderCell} from "../../generic-components/Consultar/Consultar";
+import {ConsultarMenuWrapper} from '../../generic-components/Consultar/ConsultarMenuWrapper'
+import { QueryMenu, Input, Fieldset, CheckboxList } from "../../generic-components/Consultar/QueryMenu/QueryMenu";
+import { ResultTable, HeaderCell, HeaderRow, DataRow } from "../../generic-components/Consultar/ResultTable/ResultTable";
 
 import tecnicosService from "../../../services/tecnicosService";
-import { useLoaderData } from "react-router-dom";
-import { useForm } from "react-hook-form";
+import { useLoaderData} from "react-router-dom";
 import specialtyService from "../../../services/specialtyService";
+import qs from 'qs'
+import modalService from "../../../services/modalService";
 
-export async function loadConsultaTecnicos() {
-    let data = {};
-    data.tecnicosData = await tecnicosService.getAllTecnicos();
-    data.especialidadesData = await specialtyService.getAllSpecialties();
-    return data;
+export async function loadConsultaTecnicos({request}) {
+    const url = new URL(request.url);
+    let filters = qs.parse(url.search, {delimiter: "&",ignoreQueryPrefix: true, allowEmptyArrays: true})
+    filters.especialidades = !Array.isArray(filters.especialidades) ? Array.of(filters.especialidades) : filters.especialidades;
+    let tecnicosData = await tecnicosService.filterTecnicos(filters);
+    let especialidades = await specialtyService.getAllSpecialties();
+    return {tecnicosData, especialidades, filters};
 }
 
 export default function ConsultarTecnicos(){
@@ -31,23 +36,19 @@ export default function ConsultarTecnicos(){
     }
 
 
-    function sortTecnicos(attribute, comparator, sortOrder) {
-        let sortedArray = [...tecnicos];
+    function sortTecnicos(attribute, sortOrder, comparator=undefined) {
+
+        if (!comparator) {
+            comparator = getGenericComparator(attribute, sortOrder);
+        }
+        let sortedArray = [...tecnicosData];
         sortedArray.sort(comparator);
 
-        setSortOrder(sortOrder);
         setTecnicos(sortedArray);
-        setSortedAttribute(attribute);
     }
 
-    function handleGenericSort(attribute) {
-
-        /* A generic sort handler. It creates a comparator according to the attribute. */
-
-        let comparator;
-        let nextSortOrder = getNextSortOrder(attribute);
-
-        comparator = function(o1, o2) {
+    function getGenericComparator(attribute, sortOrder) {
+        let comparator = function(o1, o2) {
             let aValue = o1[attribute];
             let bValue = o2[attribute];
 
@@ -64,11 +65,11 @@ export default function ConsultarTecnicos(){
                 return 1
             }
 
-            if (nextSortOrder === 'asc') {
+            if (sortOrder === 'asc') {
                 if (aValue < bValue) return -1;
                 if (aValue > bValue) return 1;
                 return 0;
-            } else if (nextSortOrder === 'desc') {
+            } else if (sortOrder === 'desc') {
                 if (aValue > bValue) return -1;
                 if (aValue < bValue) return 1;
                 return 0;
@@ -77,57 +78,78 @@ export default function ConsultarTecnicos(){
             }
         };
 
-        sortTecnicos(attribute, comparator, nextSortOrder);
+        return comparator; 
+    }
+
+    function handleGenericSort(attribute, comparator=undefined) {
+
+        /* A generic sort handler. It creates a comparator according to the attribute. */
+        let newSortOrder = getNextSortOrder(attribute);
+        setSortedAttribute(attribute);
+        setSortOrder(newSortOrder);
+        sortTecnicos(attribute, newSortOrder, comparator);
 
     }
 
     function handleDelete(id) {
-        console.log(id);
+
+        async function deleteTecnico() {
+            try {
+                let tecnicoBorrado = await tecnicosService.deleteTecnico(id);
+                modalService.showInfo("Operacion Correcta", "El tecnico se ha eliminado correctamente");
+                let updatedTecnicos = tecnicos.filter(t => t.id != tecnicoBorrado.id);
+                setTecnicos(updatedTecnicos);
+            }
+            catch(err) {
+                console.log("Ha fallado la eliminacion del tecnico");
+            }
+            
+            
+        }
+
+        modalService.ask("Seguro que desea eliminar el tecnico?", deleteTecnico)
+
+    }
+
+    function isChecked(especialidad) {
+        let isChecked = filters.especialidades.some(ef => Number(ef) == Number(especialidad.idEspecialidad))
+
+        return isChecked;
     }
 
     // React stuff
-    let {tecnicosData, especialidadesData} = useLoaderData();
-
-    let [tecnicos, setTecnicos] = useState(tecnicosData);
+    let {tecnicosData, especialidades, filters} = useLoaderData();
+    let [tecnicos, setTecnicos] = useState([])
     let [sortedAttribute, setSortedAttribute] = useState('');
     let [sortOrder, setSortOrder] = useState('');
 
-    const {register, handleSubmit} = useForm(
-        {
-            mode: 'onSubmit',
-            defaultValues: {
-                nombre: "",
-                apellido: "",
-                especialidades: []
+    //When the data changes, set it to the state to enable the sort functions.
+    useEffect(
+        () => {
+            if(sortedAttribute) {
+                sortTecnicos(sortedAttribute, sortOrder);
+            } else {
+                setTecnicos(tecnicosData)
             }
-        })
-
-    async function onSearch(filters) {
-        let result = await tecnicosService.filterTecnicos(filters);
-        setTecnicos(result);
-        setSortedAttribute('');
-        setSortOrder('');
-    }
+        } 
+        ,[tecnicosData])
     
-    //Load all technicians when entering the site.
-
     return (
         <ConsultarMenuWrapper header="Consulta de Tecnicos">
-            <QueryMenu submitHandler={handleSubmit} onSubmit={onSearch}>
-                <Fieldset header="Nombre y apellido">
-                    <Input register={register} type='text' attributeName='nombre' label="Nombre"/>
-                    <Input register={register} type='text' attributeName='apellido' label="Apellido"/>
-                </Fieldset>
-                {especialidadesData.length > 0 &&
-                <Fieldset header="Especialidades">
-                    <CheckboxList
-                        register = {register}
-                        attributeName={'especialidades'}
-                        buttons= {
-                            especialidadesData.map(d => {return {label: d.nombre, value: d.idEspecialidad}})
-                            }/>
-                </Fieldset>}
-
+            <QueryMenu currentPage={filters.page ?? 1}>
+                    <Fieldset header="Nombre y apellido">
+                        <Input type='search' attributeName='nombre' label="Nombre" defaultValue={filters.nombre}/>
+                        <Input type='search' attributeName='apellido' label="Apellido" defaultValue={filters.apellido}/>
+                    </Fieldset>
+                    {especialidades.length > 0 &&
+                    <Fieldset header="Especialidades">
+                        <CheckboxList
+                            attributeName={'especialidades'}
+                            buttons= {
+                                especialidades.map(d => {return {label: d.nombre, value: d.idEspecialidad, defaultChecked: isChecked(d)}})
+                                }/>
+                    </Fieldset>}
+            
             </QueryMenu>
             <ResultTable caption={"Listado de tecnicos"}>
                 <HeaderRow>

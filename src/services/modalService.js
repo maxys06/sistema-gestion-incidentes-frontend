@@ -1,3 +1,5 @@
+import { useNavigate } from "react-router-dom";
+
 let modalShow= null;
 
 /*
@@ -77,8 +79,24 @@ function ask(message, actionHandler) {
   )}
 }
 
+function redirectMessage(title, message, route) {
 
-const modalService = {subscribeShow, blockScreen, unlockScreen, showInfo, warn, ask, hide}
+  if (modalShow !=null) {
+    modalShow(true, 
+    {
+      type: 'redirect',
+      title: title,
+      body: message,
+      action: {
+        text: "Aceptar",
+        route: route
+      }
+    }
+  )}
+}
+
+
+const modalService = {subscribeShow, blockScreen, unlockScreen, showInfo, warn, ask, hide, redirectMessage}
 
 
 export default modalService

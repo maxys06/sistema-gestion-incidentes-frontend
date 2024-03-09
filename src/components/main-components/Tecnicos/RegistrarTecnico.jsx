@@ -1,6 +1,6 @@
 
 import { useFieldArray, useForm} from 'react-hook-form'
-import { Form, Input, RadioButtonList, SubmitButton, Fieldset, CheckboxList, SelectList} from '../../generic-components/RegistrarForm/RegistrarForm'
+import { Form, Input, RadioButtonList, FormButtons, Fieldset, CheckboxList, SelectList} from '../../generic-components/RegistrarForm/RegistrarForm'
 import { Button } from '../../generic-components/Button/Button';
 
 // Services
@@ -9,15 +9,46 @@ import contactTypeService from '../../../services/contactTypeService';
 import { useEffect, useState, useRef } from 'react';
 import specialtyService  from '../../../services/specialtyService';
 import tecnicosService from '../../../services/tecnicosService';
-import { Navigate, useLoaderData} from 'react-router-dom';
+import { Navigate, useLoaderData, useParams} from 'react-router-dom';
 import modalService from '../../../services/modalService';
 
-export async function loadTecnicoFormData() {
+export async function loadTecnicoFormData({request, params}) {
+    //If we are editing a tecnico, we get its id from the request params
+    let tecnicoId = params.tecnicoId
     
     let data = {};
     try {
         data.specialties = await specialtyService.getAllSpecialties();
         data.contactMethods = await contactTypeService.getAllContactTypes();
+        if(tecnicoId) {
+            console.log("There is a tecnico ID");
+            let editTecnico = await tecnicosService.getTecnicoById(tecnicoId);
+            data.defaultValues = {
+                nombre: editTecnico.nombre, 
+                apellido: editTecnico.apellido,
+                idEspecialidades: editTecnico.especialidades.map(e => e.id),
+                
+                contactos: editTecnico.datosContacto.map(d => {return {tipoContacto: d.tipo, contacto: d.dato}})
+            }
+
+            data.requestType = "edit";
+            data.tecnicoId = tecnicoId;
+
+        }
+        else {
+            console.log("There is't a tecnico id");
+            data.defaultValues = {
+                nombre: "",
+                apellido: "",
+                idEspecialidades: [],
+                contactos: [{
+                    tipoContacto: "",
+                    contacto: ""
+                }]
+            }
+            data.requestType = "register";
+            data.tecnicoId = undefined;
+        }
     }
     catch(err) {
         throw(err);
@@ -28,32 +59,28 @@ export async function loadTecnicoFormData() {
 }
 
 export default function RegistrarTecnico(){
-
     //Get the data from the loader.
-    let {specialties, contactMethods} = useLoaderData();
-
-
+    let {specialties, contactMethods, defaultValues, requestType, tecnicoId} = useLoaderData();
+    
     //Form stuff
-
     const {
         register,
         handleSubmit,
-        watch, control,
-        formState: {errors,  touchedFields, isValid}} = useForm(
-        {
+        watch, control, reset,
+        formState: {errors,  touchedFields, isValid}} = useForm({
             mode: 'onSubmit',
-            defaultValues: {
-                nombre: "",
-                apellido: "",
-                idEspecialidades: [],
-                contactos: [{
-                    tipoContacto: "",
-                    contacto: ""
-                }]
-
-            }
+            defaultValues: defaultValues
         }
-    );    
+
+    );
+
+    
+    useEffect(()=> {
+
+        reset(defaultValues);
+
+    }, [defaultValues])
+
     //The contacts are part of a dynamic field.
     const {fields, append, remove} = useFieldArray({name: "contactos", control});
 
@@ -62,33 +89,38 @@ export default function RegistrarTecnico(){
     let watchContactData = watch('contactos');
 
     // Normal react.
-    let [isSubmitSucessful, setSubmitSucessful] = useState(false)
-    let tecnicoRegistrado = useRef({});
-
     let formContactTypes =contactMethods.map(c => {return {value: c.tipo, label: c.tipo}});
+
     //We adapt the specialties attributes so that we can use it in our select.
-    let formSpecialties =specialties.map(s => {return({label: s.nombre, value: s.idEspecialidad})})
+    let formSpecialties =specialties.map(s => {return({label: s.nombre, value: s.idEspecialidad, isChecked: isChecked(s)})})
 
     //ON SUBMIT FUNCTION.
 
-    async function onSubmit(data) { 
-        
+    async function onRegister(data) { 
         async function submitTecnico(data) {
             try {
                 let tecnico = await tecnicosService.postTecnico(data);
-                tecnicoRegistrado.current.id = tecnico.id;
-                setSubmitSucessful(true);
+                modalService.redirectMessage("Registro exitoso", "Se ha registrado el tecnico correctamente", `/tecnicos/${tecnico.id}`)
             }
             catch(err) {
-                alert(err)
-                setSubmitSucessful(false);
+                console.log("Error en el registro del tecnico", err)
+
             }
         }
+        modalService.ask("Esta seguro de que desea registrar el tecnico?", async () => await submitTecnico(data))          
+    }
 
-        modalService.ask("Esta seguro de que desea registrar el tecnico?", async () => await submitTecnico(data))
-
-
-               
+    async function onEdit(data) {
+        async function editTecnico() {
+            try {
+                let tecnico = await tecnicosService.editTecnico(tecnicoId, data);
+                modalService.redirectMessage("Modificacion exitosa", "Se han modificado los datos del tecnico correctamente", `/tecnicos/${tecnicoId}`)
+            }
+            catch(err){
+                console.log("Error en la modificacion del tecnico", err)
+            }
+        }
+        modalService.ask("Esta seguro de que desea modificar el tecnico?", async () => await editTecnico(data))
     }
 
 
@@ -97,12 +129,15 @@ export default function RegistrarTecnico(){
         let contactType = contactMethods.find(c => c.tipo == tipo);
         return contactType;
     }
+    //Aux function to determine which checkboxes are checked by default
 
-    //REDIRECT AFTER FORM SUCCESFULL.
+    function isChecked(specialty) {
 
-    if(isSubmitSucessful) {
-        return <Navigate to={`/tecnicos/${tecnicoRegistrado.current.id}`}/>
+        return defaultValues.idEspecialidades.some(i => i === specialty.idEspecialidad);
     }
+
+    // We select the correct submit function, according to the 
+    let onSubmit = requestType == 'register' ? onRegister : onEdit
 
     return(
             <Form submitHandler={handleSubmit} onSubmit={onSubmit}>
@@ -152,7 +187,7 @@ export default function RegistrarTecnico(){
                                         />}
     
                                     {   //We ensure that the first button cannot be deleted.
-                                        idx > 0 && 
+                                        fields.length > 1 && 
                                         <Button type="button" size='small' buttonClass={'delete'} onClick={() => remove(idx)}>
                                             Eliminar
                                         </Button>
@@ -177,8 +212,7 @@ export default function RegistrarTecnico(){
     
                     /> 
                 </Fieldset>
-                <SubmitButton description={"Registrar Tecnico"} isValid={isValid} errors={errors}
-    />
+                <FormButtons description={requestType == "register" ? "Registrar Tecnico" : "Editar Tecnico"} submitType={requestType} isValid={isValid} errors={errors}/>
             </Form>
     )
 }

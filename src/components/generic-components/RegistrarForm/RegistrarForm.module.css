@@ -99,7 +99,8 @@
 .submitButtonContainer {
     display: flex;
     flex-direction: row;
-    padding: 1ch
+    padding: 1ch;
+    gap: 2ch;
 }
 
 @media all and (orientation: landscape) {
@@ -181,7 +182,9 @@
     }
 
     .submitButtonContainer button{
-        align-self: center
+        align-self: center;
+
+        
 
     }
 }

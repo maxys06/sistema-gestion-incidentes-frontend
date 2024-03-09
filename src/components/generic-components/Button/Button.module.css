@@ -83,7 +83,7 @@
 
 .delete {
     --button-bg-color: rgb(136, 19, 19);
-    --button-bg-hover-color: rgb(94, 13, 13);
+    --button-bg-hover-color: rgb(204, 34, 34);
     --button-bg-hover-shadow-color: rgb(207, 27, 27);
     --button-bg-click-color: rgb(83, 12, 12);
     --button-icon: 'delete';
@@ -91,7 +91,7 @@
 
 .edit {
     --button-bg-color: rgb(19, 40, 136);
-    --button-bg-hover-color: rgb(13, 51, 94);
+    --button-bg-hover-color: rgb(28, 117, 219);
     --button-bg-hover-shadow-color: rgb(27, 105, 207);
     --button-bg-click-color: rgb(12, 37, 83);
     --button-icon: 'edit';
@@ -99,19 +99,18 @@
 
 .consultar {
     --button-bg-color: rgb(19, 109, 136);
-    --button-bg-hover-color: rgb(13, 91, 94);
+    --button-bg-hover-color: rgb(21, 165, 170);
     --button-bg-hover-shadow-color: rgb(27, 165, 207);
     --button-bg-click-color: rgb(12, 66, 83);
     --button-icon: 'visibility';
 }
 
 .goBack {
-    color: black;
-    --button-bg-color: rgb(250, 204, 0);
-    --button-bg-hover-color: rgb(173, 147, 0);
-    --button-bg-hover-shadow-color: rgb(165, 113, 0);
-    --button-bg-click-color: rgb(97, 66, 0);
-    --button-icon: 'undo'
+    --button-bg-color: rgb(170, 116, 0);
+    --button-bg-hover-color: rgb(173, 118, 0);
+    --button-bg-hover-shadow-color: rgb(165, 99, 0);
+    --button-bg-click-color: rgb(97, 74, 0);
+    --button-icon: 'arrow_back_ios'
 }
 
 .accept {

@@ -18,7 +18,7 @@ httpService.interceptors.request.use(
   },
   (error) => {
     console.log("Error en la peticion...", request);
-    modalService.warn("Error en la peticion", "Ha ocurrido un error en la peticion" + error);
+    modalService.warn("Error en la peticion", "Ha ocurrido un error en la peticion: " + error.message + " " + error.response?.data);
     return Promise.reject(error);
   }
 )
@@ -31,7 +31,14 @@ httpService.interceptors.response.use(
   },
   (error) => {
     console.log("Error en la respuesta: ", error);
-    modalService.warn("Error en la peticion", error.message);
+
+    let errorMessage = {};
+    errorMessage.message = `Message: ${error.message}`;
+    errorMessage.code = `Code: ${error.code}`;
+    errorMessage.data = error.response ? `Data: ${error.response.data}` : ""
+    let errorString = ` ${errorMessage.message} \n ${errorMessage.code} \n  ${errorMessage.data}`; 
+
+    modalService.warn("Error en la peticion", errorString);
     return Promise.reject(error);
   }
 )

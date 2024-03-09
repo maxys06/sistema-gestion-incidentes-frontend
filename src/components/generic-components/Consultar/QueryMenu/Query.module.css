@@ -1,20 +1,69 @@
 
 
-.filterForm {
+.formContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.filters {
+  align-self: center;
   display: flex;
   flex-direction: row;
-  align-items: center;
-  border: 2px solid gray;
+  flex-wrap: wrap;
+  gap: 3ch;
   background-color: var(--grid-item-color);
-  gap: 2ch;
-  padding: 1rem 2rem 1rem 2rem;
+  padding: 0.8rem;
   border-radius: 11px;
+  border: 1px solid rgb(214, 214, 214);
+  width: 100%;
+  align-items: center;
+  justify-content: center;
 }
 
 
+.pageSelectorContainer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 1rem;
+  align-items: center;
+  width: 100%;
+}
+
+.pageSelector {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.pageSelector input {
+  width: 5rem;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+.pageButton{
+  font-family: "Material Icons";
+  content: 'last_page';
+  border: 0;
+  font-size: 2rem;
+  background-color: rgba(240, 248, 255, 0);
+  cursor: pointer;
+}
+
+.pageInfo {
+  font-style: italic;
+  padding: .5rem;
+  margin-right: auto;
+  font-size: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5ch;
+  border-left: 2px solid gray;
+}
 
 
-.filters {
+.filterInputs {
   display: flex;
   border-radius: 10px;
   flex-wrap: wrap;

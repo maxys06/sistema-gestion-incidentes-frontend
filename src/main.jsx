@@ -50,7 +50,9 @@ const routes = [{
             errorElement: <ErrorScreen title={"Ha ocurrido un error"}/>
           },
           {path: '/tecnicos/edit/:tecnicoId',
-           element: <>Nothing here brotha</>}
+           element: <RegistrarTecnico/>,
+          loader: loadTecnicoFormData,
+          errorElement: <ErrorScreen title={"Ha ocurrido un error"}/>}
 
         ]
       }]

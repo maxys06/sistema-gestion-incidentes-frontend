@@ -9,7 +9,10 @@ export function ErrorScreen({title, message}) {
 
     <section className={styles.errorContainer}>
       <header>{title}</header>
-      <div>{errors.message}</div>
+      <div>
+        {errors.message}
+        
+      </div>
     </section>
 
   )
