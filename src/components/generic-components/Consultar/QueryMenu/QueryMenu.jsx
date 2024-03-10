@@ -7,7 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 
 
 
-export function QueryMenu({children, currentPage}) {
+export function QueryMenu({children, currentPage, totalPages, totalElements}) {
 
   let submit = useSubmit();
   let pageInputRef = useRef(null);
@@ -21,7 +21,12 @@ export function QueryMenu({children, currentPage}) {
       pageInputRef.current.value = 1;
     }
     else {
-      pageInputRef.current.value = e.target.value.replace(/[a-zA-Z\s\\-]+/g, "");
+      if (e.target.value > totalPages) {
+        pageInputRef.current.value = totalPages;
+      }
+      else {
+        pageInputRef.current.value = e.target.value.replace(/[a-zA-Z\s\\-]+/g, "");
+      }
       
     }
     submit(e.currentTarget.form);
@@ -34,8 +39,14 @@ export function QueryMenu({children, currentPage}) {
       pageInputRef.current.value = 1;
     }
     else {
-      pageInputRef.current.value = Number(pageInputRef.current.value) + Number(number);
-      submit(e.currentTarget.form);
+
+      if (Number(pageInputRef.current.value) + Number(number) > totalPages) {
+        pageInputRef.current.value = totalPages;
+      }
+      else {
+        pageInputRef.current.value = Number(pageInputRef.current.value) + Number(number);
+        submit(e.currentTarget.form);
+      }
     }
     
   }
@@ -61,10 +72,10 @@ export function QueryMenu({children, currentPage}) {
       <div className={styles.pageSelectorContainer}>
         <div className={styles.pageInfo}>
           <div className={styles.pageCount}>
-            Pagina {currentPage} de 100
+            Pagina {currentPage} de {totalPages}
           </div>
           <div className={styles.totalResults}>
-            Resultados: 21
+            Resultados: {totalElements}
           </div>
         </div>
         <div className={styles.pageSelector}>

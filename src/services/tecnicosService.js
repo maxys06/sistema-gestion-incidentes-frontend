@@ -34,8 +34,9 @@ async function postTecnico(data) {
 async function filterTecnicos(filters) {
   let parsedFilter = qs.stringify(filters, { arrayFormat: 'repeat' })
   let response = await httpService.get(`${$API_TECNICO}/filtros?${parsedFilter}`)
-  let tecnicos = response.data.map(d => tecnicoMapper(d));
-  return tecnicos
+  let tecnicos = response.data.tecnicos.map(d => tecnicoMapper(d));
+
+  return {tecnicos: tecnicos, totalPages: response.data.totalPages, totalElements: response.data.totalElements, selectedPage: response.data.selectedPage}
 }
 
 async function deleteTecnico(id) {

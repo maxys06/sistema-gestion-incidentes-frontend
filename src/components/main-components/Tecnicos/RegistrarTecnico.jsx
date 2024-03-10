@@ -74,7 +74,7 @@ export default function RegistrarTecnico(){
 
     );
 
-    
+    //If the default values change, it means that we went from Edit to Registrar, or viceversa
     useEffect(()=> {
 
         reset(defaultValues);

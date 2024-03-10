@@ -44,6 +44,7 @@
   background-color: var(--headerColor);
   border-right: 1px solid gray;
   border-bottom: 1px groove gray;
+  font-style: normal;
 
   padding-top: 0rem;
   padding-bottom: 0rem;
@@ -81,7 +82,9 @@
 }
 
 .cellHeader:last-of-type {
-  width: 21%;
+  width: 10%;
+  text-wrap: wrap;
+  overflow-x: hidden
 }
 
 .sorted {
@@ -110,15 +113,14 @@
   background-color: rgb(255, 255, 255);
   transition-property: background-color;
   transition-duration: 100ms;
-  padding-top: .5rem;
-  padding-bottom: .5rem;
-  padding-left: .5rem;
+  padding: .5rem;
+
   text-align: left;
   word-wrap: break-word;
 }
 
 .cell:last-of-type{
-  width: 21%;
+  text-align: center;
   
 
 }
@@ -141,14 +143,14 @@
 
 .actionButtonList {
 
-
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
+  align-items: center;
 
   gap: 0.5rem;
 
 }
-
 
 @media (orientation: portrait) {
   .consultarContainer{
